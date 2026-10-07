@@ -15,7 +15,9 @@ import json
 import base64 
 import webbrowser
 
-CURRENT_VERSION =  1.0
+CURRENT_VERSION =  1.1
+
+print("Đây là bản 10.4 mới!")
 
 RAW_VERSION_URL = "https://raw.githubusercontent.com/boozii25/botbot/refs/heads/main/version.txt"
 RAW_CODE_URL = "https://raw.githubusercontent.com/boozii25/botbot/refs/heads/main/botbot.py"
