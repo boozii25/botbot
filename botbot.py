@@ -15,6 +15,35 @@ import json
 import base64 
 import webbrowser
 
+CURRENT_VERSION =  1.0
+
+RAW_VERSION_URL = "https://raw.githubusercontent.com/boozii25/botbot/refs/heads/main/version.txt"
+RAW_CODE_URL = "https://raw.githubusercontent.com/boozii25/botbot/refs/heads/main/botbot.py"
+
+def check_for_updates():
+    try:
+        print(f"🔄 Đang kiểm tra phiên bản mới... (Hiện tại: v{CURRENT_VERSION})")
+        req = requests.get(RAW_VERSION_URL, timeout=5)
+        latest_version = float(req.text.strip())
+        
+        if latest_version > CURRENT_VERSION:
+            print(f"🚀 Phát hiện phiên bản mới: v{latest_version}. Đang tải xuống...")
+            code_req = requests.get(RAW_CODE_URL, timeout=10)
+            
+            with open(__file__, 'w', encoding='utf-8') as f:
+                f.write(code_req.text)
+                
+            print("✅ Cập nhật thành công! Mở trang Web Điều Khiển mới sau 3 giây...")
+            time.sleep(3)
+            os.execv(sys.executable, ['python', __file__] + sys.argv[1:])
+        else:
+            print("✅ Bạn đang sử dụng phiên bản mới nhất!")
+    except Exception as e:
+        print(f"⚠️ Không thể kiểm tra cập nhật (Lỗi mạng hoặc sai Link). Chạy Offline.")
+
+if not getattr(sys, 'frozen', False): 
+    check_for_updates()
+
 # --- THƯ VIỆN LÀM WEB ---
 from flask import Flask, jsonify, render_template_string, request
 import logging
